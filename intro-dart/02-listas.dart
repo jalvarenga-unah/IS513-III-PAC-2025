@@ -1,6 +1,6 @@
 void main() {
   //listas
-  final lista = [1, 2, 3, 4, 5];
+  final List<int> lista = [1, 2, 3, 4, 5];
 
   print(lista);
   lista[0] = 10;
