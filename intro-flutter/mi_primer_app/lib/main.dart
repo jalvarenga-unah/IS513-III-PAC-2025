@@ -20,10 +20,21 @@ class MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    print('actualizacion del widget (estado)');
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
+          elevation: 10,
+          leading: Icon(Icons.person_2_sharp),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.settings, color: Colors.white),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.exit_to_app, color: Colors.white),
+            ),
+          ],
           centerTitle: false,
           backgroundColor: Colors.teal[700],
           title: Text(
@@ -34,20 +45,90 @@ class MyAppState extends State<MyApp> {
         // appBar: AppBar(backgroundColor: Color(0xFF242424)),
         body: SizedBox(
           width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                'Hola mundo',
-                style: TextStyle(fontSize: 50, color: Colors.black87),
-              ),
-              Text(
-                '$contador',
-                style: TextStyle(fontSize: 45, color: Colors.black87),
-              ),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Hola mundo',
+                  style: TextStyle(fontSize: 50, color: Colors.black87),
+                ),
+                Text(
+                  'Hola mundo',
+                  style: TextStyle(fontSize: 50, color: Colors.black87),
+                ),
+                Text(
+                  'Hola mundo',
+                  style: TextStyle(fontSize: 50, color: Colors.black87),
+                ),
+                Text(
+                  'Hola mundo',
+                  style: TextStyle(fontSize: 50, color: Colors.black87),
+                ),
+                Text(
+                  'Hola mundo',
+                  style: TextStyle(fontSize: 50, color: Colors.black87),
+                ),
+                Text(
+                  'Hola mundo',
+                  style: TextStyle(fontSize: 50, color: Colors.black87),
+                ),
+                Text(
+                  'Hola mundo',
+                  style: TextStyle(fontSize: 50, color: Colors.black87),
+                ),
+                Text(
+                  'Hola mundo',
+                  style: TextStyle(fontSize: 50, color: Colors.black87),
+                ),
+                Text(
+                  'Hola mundo',
+                  style: TextStyle(fontSize: 50, color: Colors.black87),
+                ),
+                Text(
+                  'Hola mundo',
+                  style: TextStyle(fontSize: 50, color: Colors.black87),
+                ),
+                Text(
+                  'Hola mundo',
+                  style: TextStyle(fontSize: 50, color: Colors.black87),
+                ),
+                Text(
+                  'Hola mundo',
+                  style: TextStyle(fontSize: 50, color: Colors.black87),
+                ),
+                Text(
+                  'Hola mundo',
+                  style: TextStyle(fontSize: 50, color: Colors.black87),
+                ),
+                Text(
+                  'Hola mundo',
+                  style: TextStyle(fontSize: 50, color: Colors.black87),
+                ),
+                Text(
+                  'Hola mundo',
+                  style: TextStyle(fontSize: 50, color: Colors.black87),
+                ),
+                Text(
+                  'Hola mundo',
+                  style: TextStyle(fontSize: 50, color: Colors.black87),
+                ),
+                Text(
+                  'Hola mundo',
+                  style: TextStyle(fontSize: 50, color: Colors.black87),
+                ),
+                Text(
+                  'Hola mundo',
+                  style: TextStyle(fontSize: 50, color: Colors.black87),
+                ),
+                Text(
+                  '$contador',
+                  style: TextStyle(fontSize: 45, color: Colors.black87),
+                ),
+              ],
+            ),
           ),
         ),
         // floatingActionButtonLocation:
