@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: GoRouter(
-        initialLocation: '/todos',
+        initialLocation: '/todos/create',
         routes: [
           GoRoute(
             path: '/todos',
