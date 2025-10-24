@@ -4,16 +4,32 @@ import 'package:todo_app/api/todos.dart';
 import 'package:todo_app/src/shared/utils.dart';
 
 class AdminTodoPage extends StatelessWidget {
-  AdminTodoPage({super.key});
+  AdminTodoPage({super.key, this.todo});
 
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   FocusNode titleFocus = FocusNode();
 
+  Map<String, dynamic>? todo;
+
   @override
   Widget build(BuildContext context) {
+    //Id que me permite consultar a la BBDD la información actualziada
+    final todoId = GoRouterState.of(context).pathParameters['id'];
+
+    if (todo != null) {
+      titleController.text = todo!['title'];
+      descriptionController.text = todo!['description'];
+    }
+
     return Scaffold(
-      appBar: AppBar(title: Text('Creación de una nueva tarea')),
+      appBar: AppBar(
+        title: Text(
+          todo == null
+              ? 'Creación de una nueva tarea'
+              : 'Editando la tarea # $todoId',
+        ),
+      ),
       body: Padding(
         padding: EdgeInsetsGeometry.symmetric(vertical: 8, horizontal: 16),
         child: Column(
@@ -81,7 +97,16 @@ class AdminTodoPage extends StatelessWidget {
             'description': descriptionController.text,
             'completed': false,
           };
-          todoList.add(newTodo);
+
+          if (todoId == null) {
+            todoList.add(newTodo);
+          } else {
+            final indice = todoList.indexWhere(
+              (todo) => todo['id'].toString() == todoId,
+            );
+
+            todoList[indice] = newTodo;
+          }
 
           // final snackBar = SnackBar(
           //   content: const Text('Yay! A SnackBar!'),

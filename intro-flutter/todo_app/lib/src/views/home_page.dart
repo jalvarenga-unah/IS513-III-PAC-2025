@@ -8,13 +8,63 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('dibujando home');
     return Scaffold(
       appBar: AppBar(title: const Text('TODO-App')),
       body: ListView.builder(
         itemCount: todoList.length,
         itemBuilder: (BuildContext context, int index) {
-          return ItemList(todo: todoList[index]);
+          return Dismissible(
+            confirmDismiss: (direction) async {
+              if (direction == DismissDirection.endToStart) {
+                context.pushNamed(
+                  'update-todo',
+                  pathParameters: {'id': '${todoList[index]['id']}'},
+                  extra: todoList[index],
+                );
+                return false;
+              }
+
+              // return direction == DismissDirection.startToEnd;
+              return false;
+            },
+            onDismissed: (direction) {
+              print(direction);
+            },
+            background: Container(
+              padding: EdgeInsets.only(left: 16),
+              color: Colors.red,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Icon(
+                  Icons.delete_outline_rounded,
+                  color: Colors.red[50],
+                  size: 30,
+                ),
+              ),
+            ),
+            secondaryBackground: Container(
+              padding: EdgeInsets.only(right: 16),
+              color: Colors.blue,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    'Modificar',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue[50],
+                    ),
+                  ),
+                  SizedBox(width: 12),
+                  Icon(Icons.edit_outlined, color: Colors.blue[50], size: 30),
+                ],
+              ),
+            ),
+
+            key: Key(todoList[index]['id'].toString()),
+            child: ItemList(todo: todoList[index]),
+          );
         },
       ),
 

@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: GoRouter(
-        initialLocation: '/todos/create',
+        initialLocation: '/todos',
         routes: [
           GoRoute(
             path: '/todos',
@@ -22,12 +22,17 @@ class MyApp extends StatelessWidget {
               GoRoute(
                 path: '/create', //?   /todos/create
                 name: 'new-todo',
-                builder: (state, context) => AdminTodoPage(),
+                builder: (context, state) => AdminTodoPage(),
               ),
               GoRoute(
                 path: '/:id', //?   /todos/124
                 name: 'update-todo',
-                builder: (state, context) => AdminTodoPage(),
+                builder: (context, state) {
+                  print(state.pathParameters);
+                  final todo = state.extra as Map<String, dynamic>;
+
+                  return AdminTodoPage(todo: todo);
+                },
               ),
             ],
           ),
