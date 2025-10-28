@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todo_app/api/todos.dart';
+import 'package:todo_app/src/shared/utils.dart';
 import 'package:todo_app/src/widgets/item_list.dart';
 
 class HomePage extends StatelessWidget {
@@ -15,6 +16,7 @@ class HomePage extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return Dismissible(
             confirmDismiss: (direction) async {
+              //? Para actualizar
               if (direction == DismissDirection.endToStart) {
                 context.pushNamed(
                   'update-todo',
@@ -24,8 +26,13 @@ class HomePage extends StatelessWidget {
                 return false;
               }
 
-              // return direction == DismissDirection.startToEnd;
-              return false;
+              //? Para eliminar
+              return await Utils.showConfirm(
+                context: context,
+                confirmButton: () {
+                  context.pop(todoList.remove(todoList[index]));
+                },
+              );
             },
             onDismissed: (direction) {
               print(direction);
