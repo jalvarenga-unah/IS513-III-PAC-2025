@@ -8,9 +8,9 @@ class AdminTodoPage extends StatelessWidget {
 
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
-  FocusNode titleFocus = FocusNode();
+  final FocusNode titleFocus = FocusNode();
 
-  Map<String, dynamic>? todo;
+  final Map<String, dynamic>? todo;
 
   @override
   Widget build(BuildContext context) {
@@ -69,8 +69,6 @@ class AdminTodoPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue[300],
         onPressed: () {
-          //TODO: mostrar icono de carga usando gestores de estado
-
           if (titleController.text.isEmpty) {
             // ScaffoldMessenger.of(context).showSnackBar(
             //   SnackBar(

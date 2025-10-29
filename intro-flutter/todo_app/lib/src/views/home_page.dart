@@ -10,6 +10,55 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.red[50],
+                    radius: 40,
+                    child: Text(
+                      'JA',
+                      style: TextStyle(fontSize: 42, color: Colors.red[400]),
+                    ),
+                  ),
+                  Text('Juan Alvarenga'),
+                ],
+              ),
+            ),
+
+            ListTile(leading: Icon(Icons.home), title: Text('Inicio')),
+            ListTile(
+              leading: Icon(Icons.important_devices),
+              title: Text('Importantes'),
+            ),
+            ListTile(leading: Icon(Icons.warning), title: Text('Críticas')),
+            ListTile(
+              leading: Icon(Icons.calendar_month_rounded),
+              title: Text('Calendario'),
+              onTap: () {
+                //
+                context.pop();
+                context.pushNamed('new-todo');
+              },
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('Configuraciones'),
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.calendar_month_rounded),
+              title: Text('Calendario'),
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(title: const Text('TODO-App')),
       body: ListView.builder(
         itemCount: todoList.length,
