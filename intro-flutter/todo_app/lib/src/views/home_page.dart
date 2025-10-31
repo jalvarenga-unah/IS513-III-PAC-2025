@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todo_app/api/todos.dart';
+import 'package:todo_app/src/providers/todo_provider.dart';
 import 'package:todo_app/src/shared/utils.dart';
 import 'package:todo_app/src/widgets/item_list.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+
+  final todoProvider = TodoProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -60,66 +63,75 @@ class HomePage extends StatelessWidget {
         ),
       ),
       appBar: AppBar(title: const Text('TODO-App')),
-      body: ListView.builder(
-        itemCount: todoList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Dismissible(
-            confirmDismiss: (direction) async {
-              //? Para actualizar
-              if (direction == DismissDirection.endToStart) {
-                context.pushNamed(
-                  'update-todo',
-                  pathParameters: {'id': '${todoList[index]['id']}'},
-                  extra: todoList[index],
-                );
-                return false;
-              }
+      body: FutureBuilder(
+        future: todoProvider.getAllTodos(),
+        builder: (context, snapshot) {
+          return ListView.builder(
+            itemCount: todoList.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Dismissible(
+                confirmDismiss: (direction) async {
+                  //? Para actualizar
+                  if (direction == DismissDirection.endToStart) {
+                    context.pushNamed(
+                      'update-todo',
+                      pathParameters: {'id': '${todoList[index]['id']}'},
+                      extra: todoList[index],
+                    );
+                    return false;
+                  }
 
-              //? Para eliminar
-              return await Utils.showConfirm(
-                context: context,
-                confirmButton: () {
-                  context.pop(todoList.remove(todoList[index]));
+                  //? Para eliminar
+                  return await Utils.showConfirm(
+                    context: context,
+                    confirmButton: () {
+                      context.pop(todoList.remove(todoList[index]));
+                    },
+                  );
                 },
-              );
-            },
-            onDismissed: (direction) {
-              print(direction);
-            },
-            background: Container(
-              padding: EdgeInsets.only(left: 16),
-              color: Colors.red,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Icon(
-                  Icons.delete_outline_rounded,
-                  color: Colors.red[50],
-                  size: 30,
-                ),
-              ),
-            ),
-            secondaryBackground: Container(
-              padding: EdgeInsets.only(right: 16),
-              color: Colors.blue,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    'Modificar',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue[50],
+                onDismissed: (direction) {
+                  print(direction);
+                },
+                background: Container(
+                  padding: EdgeInsets.only(left: 16),
+                  color: Colors.red,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Icon(
+                      Icons.delete_outline_rounded,
+                      color: Colors.red[50],
+                      size: 30,
                     ),
                   ),
-                  SizedBox(width: 12),
-                  Icon(Icons.edit_outlined, color: Colors.blue[50], size: 30),
-                ],
-              ),
-            ),
+                ),
+                secondaryBackground: Container(
+                  padding: EdgeInsets.only(right: 16),
+                  color: Colors.blue,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'Modificar',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue[50],
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      Icon(
+                        Icons.edit_outlined,
+                        color: Colors.blue[50],
+                        size: 30,
+                      ),
+                    ],
+                  ),
+                ),
 
-            key: Key(todoList[index]['id'].toString()),
-            child: ItemList(todo: todoList[index]),
+                key: Key(todoList[index]['id'].toString()),
+                child: ItemList(todo: todoList[index]),
+              );
+            },
           );
         },
       ),
