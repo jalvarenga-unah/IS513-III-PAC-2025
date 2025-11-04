@@ -11,10 +11,27 @@ class TodoProvider {
 
     final todos = List<Todo>.from(
       snapshotTodos.docs.map((todo) {
-        return Todo.fromJson(todo.data());
+        // final test = {
+        //   'id':todo.id,
+        //   'title':todo.data()['title'],
+        //   'description':todo.data()['description'],
+        //   'completed':todo.data()['completed'],
+        // };
+
+        return Todo.fromJson({'id': todo.id, ...todo.data()});
       }),
     );
 
     return todos;
+  }
+
+  Future<Todo> saveTodo(Map<String, dynamic> todo) async {
+    final db = FirebaseFirestore.instance;
+
+    final collectionRefTodos = db.collection('todos');
+
+    final newTodo = await collectionRefTodos.add(todo);
+
+    return Todo.fromJson({'id': newTodo.id, ...todo});
   }
 }

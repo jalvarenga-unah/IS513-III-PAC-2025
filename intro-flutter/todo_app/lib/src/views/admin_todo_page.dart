@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todo_app/api/todos.dart';
+import 'package:todo_app/src/providers/todo_provider.dart';
 import 'package:todo_app/src/shared/utils.dart';
 
 class AdminTodoPage extends StatelessWidget {
@@ -9,7 +10,7 @@ class AdminTodoPage extends StatelessWidget {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   final FocusNode titleFocus = FocusNode();
-
+  final todoProvider = TodoProvider();
   final Map<String, dynamic>? todo;
 
   @override
@@ -68,7 +69,7 @@ class AdminTodoPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue[300],
-        onPressed: () {
+        onPressed: () async {
           if (titleController.text.isEmpty) {
             // ScaffoldMessenger.of(context).showSnackBar(
             //   SnackBar(
@@ -90,14 +91,17 @@ class AdminTodoPage extends StatelessWidget {
           }
 
           final Map<String, dynamic> newTodo = {
-            'id': todoList.length + 1,
             'title': titleController.text,
             'description': descriptionController.text,
             'completed': false,
           };
 
           if (todoId == null) {
-            todoList.add(newTodo);
+            // todoList.add(newTodo);
+            // mostrar icono de carga
+            await todoProvider.saveTodo(newTodo);
+
+            // ocultar icono de carga
           } else {
             final indice = todoList.indexWhere(
               (todo) => todo['id'].toString() == todoId,

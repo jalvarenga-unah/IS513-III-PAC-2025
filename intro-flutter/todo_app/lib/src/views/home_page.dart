@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:todo_app/api/todos.dart';
+import 'package:todo_app/src/models/todo.dart';
 import 'package:todo_app/src/providers/todo_provider.dart';
 import 'package:todo_app/src/shared/utils.dart';
 import 'package:todo_app/src/widgets/item_list.dart';
@@ -66,8 +66,23 @@ class HomePage extends StatelessWidget {
       body: FutureBuilder(
         future: todoProvider.getAllTodos(),
         builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Center(child: Text(snapshot.error.toString()));
+          }
+
+          // if(snapshot.hasData){
+          // }
+
+          final List<Todo> todos = snapshot.data!;
+
+          print(todos);
+
           return ListView.builder(
-            itemCount: todoList.length,
+            itemCount: todos.length,
             itemBuilder: (BuildContext context, int index) {
               return Dismissible(
                 confirmDismiss: (direction) async {
@@ -75,8 +90,8 @@ class HomePage extends StatelessWidget {
                   if (direction == DismissDirection.endToStart) {
                     context.pushNamed(
                       'update-todo',
-                      pathParameters: {'id': '${todoList[index]['id']}'},
-                      extra: todoList[index],
+                      pathParameters: {'id': todos[index].id},
+                      extra: todos[index],
                     );
                     return false;
                   }
@@ -85,7 +100,7 @@ class HomePage extends StatelessWidget {
                   return await Utils.showConfirm(
                     context: context,
                     confirmButton: () {
-                      context.pop(todoList.remove(todoList[index]));
+                      context.pop(todos.remove(todos[index]));
                     },
                   );
                 },
@@ -128,11 +143,13 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
 
-                key: Key(todoList[index]['id'].toString()),
-                child: ItemList(todo: todoList[index]),
+                key: Key(todos[index].id),
+                child: ItemList(todo: todos[index]),
               );
             },
           );
+
+          // información de todo lo que ocurre con el future
         },
       ),
 
