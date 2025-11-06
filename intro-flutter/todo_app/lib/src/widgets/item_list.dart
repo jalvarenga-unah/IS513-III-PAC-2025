@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/src/models/todo.dart';
+import 'package:todo_app/src/providers/todo_provider.dart';
 
 class ItemList extends StatefulWidget {
   const ItemList({super.key, required this.todo});
@@ -11,6 +12,12 @@ class ItemList extends StatefulWidget {
 }
 
 class _ItemListState extends State<ItemList> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  final provider = TodoProvider();
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -36,9 +43,15 @@ class _ItemListState extends State<ItemList> {
         checkColor: Colors.blue,
         activeColor: Colors.blue[100],
         value: widget.todo.completed,
-        onChanged: (value) {
+        onChanged: (value) async {
           setState(() {});
-          // widget.todo.completed = value;
+
+          final result = await provider.markAsComplete(
+            docId: widget.todo.id,
+            value: value ?? false,
+          );
+          // if (result)
+          // widget.todo.completed = value ?? false;
         },
       ),
     );

@@ -63,8 +63,8 @@ class HomePage extends StatelessWidget {
         ),
       ),
       appBar: AppBar(title: const Text('TODO-App')),
-      body: FutureBuilder(
-        future: todoProvider.getAllTodos(),
+      body: StreamBuilder(
+        stream: todoProvider.getAllTodosSync(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
