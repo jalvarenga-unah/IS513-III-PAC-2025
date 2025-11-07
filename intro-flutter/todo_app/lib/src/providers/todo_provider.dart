@@ -25,37 +25,28 @@ class TodoProvider {
     return todos;
   }
 
-  Stream<List<Todo>> getAllTodosSync() async {
+  Stream<List<Todo>> getAllTodosStream() {
     final db = FirebaseFirestore.instance;
-
     final collectionRefTodos = db.collection('todos');
+    final snapshotTodos = collectionRefTodos.snapshots();
 
-    final snapshotTodos = await collectionRefTodos.snapshots();
-
-    final todos = List<Todo>.from(
-      snapshotTodos.docs.map((todo) {
-        // final test = {
-        //   'id':todo.id,
-        //   'title':todo.data()['title'],
-        //   'description':todo.data()['description'],
-        //   'completed':todo.data()['completed'],
-        // };
-
+    final todos = snapshotTodos.map((snapshot) {
+      return snapshot.docs.map((todo) {
         return Todo.fromJson({'id': todo.id, ...todo.data()});
-      }),
-    );
+      }).toList();
+    });
 
     return todos;
   }
 
-  Future<Todo> saveTodo(Map<String, dynamic> todo) async {
+  Future<void> saveTodo(Map<String, dynamic> todo) async {
     final db = FirebaseFirestore.instance;
 
     final collectionRefTodos = db.collection('todos');
 
-    final newTodo = await collectionRefTodos.add(todo);
+    await collectionRefTodos.add(todo);
 
-    return Todo.fromJson({'id': newTodo.id, ...todo});
+    // return Todo.fromJson({'id': newTodo.id, ...todo});
   }
 
   Future<bool> markAsComplete({

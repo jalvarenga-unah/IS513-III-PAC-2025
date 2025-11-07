@@ -127,6 +127,9 @@ class AdminTodoPage extends StatelessWidget {
           //     action: SnackBarAction(label: 'Cerrar', onPressed: () {}),
           //   ),
           // );
+
+          if (!context.mounted) return;
+
           Utils.showSnackBar(
             context: context,
             title: "Tarea creada correctamente",

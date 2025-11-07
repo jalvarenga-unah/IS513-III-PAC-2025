@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todo_app/src/models/todo.dart';
@@ -64,7 +66,7 @@ class HomePage extends StatelessWidget {
       ),
       appBar: AppBar(title: const Text('TODO-App')),
       body: StreamBuilder(
-        stream: todoProvider.getAllTodosSync(),
+        stream: todoProvider.getAllTodosStream(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -100,6 +102,12 @@ class HomePage extends StatelessWidget {
                   return await Utils.showConfirm(
                     context: context,
                     confirmButton: () {
+                      FirebaseFirestore.instance
+                          .collection('todos')
+                          .doc(todos[index].id)
+                          .delete();
+
+                      if (!context.mounted) return;
                       context.pop(todos.remove(todos[index]));
                     },
                   );
