@@ -12,7 +12,20 @@
           "package_name": "hn.edu.unah.todo_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "667875670711-s514giupns3fdqbb3dgcrvlgsre5ci74.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hn.edu.unah.todo_app",
+            "certificate_hash": "10534f23348505a5c289173226d31c222aa6a16b"
+          }
+        },
+        {
+          "client_id": "667875670711-aeqc3006ofnb0a4kaegq0bd07htunvcn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDpUE63Xv-RqzxX5uRVFvvzPC5VXvOraHg"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "667875670711-aeqc3006ofnb0a4kaegq0bd07htunvcn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "667875670711-8fvhsc7bu94jjmopu6gjj141oo4qgvot.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.todoApp"
+              }
+            }
+          ]
         }
       }
     }

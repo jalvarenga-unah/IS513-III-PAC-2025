@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:todo_app/firebase_options.dart';
 import 'package:todo_app/src/views/admin_todo_page.dart';
 import 'package:todo_app/src/views/home_page.dart';
+import 'package:todo_app/src/views/login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,8 +20,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: GoRouter(
-        initialLocation: '/todos',
+        initialLocation: '/login',
         routes: [
+          GoRoute(
+            path: '/login', //?   /todos/create
+            name: 'login',
+            builder: (context, state) => LoginPage(),
+          ),
           GoRoute(
             path: '/todos',
             name: 'todo-list',
