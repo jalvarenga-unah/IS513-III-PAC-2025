@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -20,12 +21,29 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: GoRouter(
-        initialLocation: '/login',
+        redirect: (context, state) {
+          final user = FirebaseAuth.instance.currentUser;
+
+          final freeRoutes = ['/register'];
+
+          if (user == null && !freeRoutes.contains(state.fullPath)) {
+            return '/login';
+          }
+
+          return null;
+        },
+        initialLocation: '/todos',
         routes: [
           GoRoute(
-            path: '/login', //?   /todos/create
+            path: '/login',
             name: 'login',
             builder: (context, state) => LoginPage(),
+          ),
+          GoRoute(
+            path: '/register',
+            name: 'register',
+            builder: (context, state) =>
+                Scaffold(body: Center(child: Text('REGISTRO'))),
           ),
           GoRoute(
             path: '/todos',

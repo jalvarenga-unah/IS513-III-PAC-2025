@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:todo_app/src/shared/utils.dart';
 import '../widgets/custom_text_field.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -37,7 +40,24 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void _handleGoogleSignIn() {}
+  Future<UserCredential> _handleGoogleSignIn() async {
+    //TODO: REvision de actualizacion de inicio de sesión
+
+    // Trigger the authentication flow
+    final GoogleSignIn signIn = GoogleSignIn.instance;
+
+    // Obtain the auth details from the request
+    final GoogleSignInAccount googleAuth = await signIn.authenticate();
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      // accessToken: ,
+      idToken: googleAuth.authentication.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -228,24 +248,11 @@ class _LoginPageState extends State<LoginPage> {
 
                 // Registrarse
                 Center(
-                  child: RichText(
-                    text: TextSpan(
-                      text: '¿No tienes cuenta? ',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF6B7280),
-                      ),
-                      children: [
-                        TextSpan(
-                          text: 'Regístrate',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFF2563EB),
-                          ),
-                          recognizer: null, // Aquí irá tu navegación
-                        ),
-                      ],
-                    ),
+                  child: TextButton(
+                    onPressed: () {
+                      context.push('/register');
+                    },
+                    child: Text('Registrate'),
                   ),
                 ),
               ],
