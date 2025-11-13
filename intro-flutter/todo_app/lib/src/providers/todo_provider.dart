@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todo_app/src/models/todo.dart';
 
 class TodoProvider {
@@ -27,7 +28,12 @@ class TodoProvider {
 
   Stream<List<Todo>> getAllTodosStream() {
     final db = FirebaseFirestore.instance;
-    final collectionRefTodos = db.collection('todos');
+    final collectionRefTodos = db
+        .collection('todos')
+        .where('user', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+        .where('completed', isEqualTo: false)
+        .limit(10);
+
     final snapshotTodos = collectionRefTodos.snapshots();
 
     final todos = snapshotTodos.map((snapshot) {

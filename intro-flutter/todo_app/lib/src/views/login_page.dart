@@ -40,22 +40,20 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future<UserCredential> _handleGoogleSignIn() async {
-    //TODO: REvision de actualizacion de inicio de sesión
-
+  Future<UserCredential?> _handleGoogleSignIn() async {
     // Trigger the authentication flow
     final GoogleSignIn signIn = GoogleSignIn.instance;
+
+    await signIn.initialize();
 
     // Obtain the auth details from the request
     final GoogleSignInAccount googleAuth = await signIn.authenticate();
 
     // Create a new credential
     final credential = GoogleAuthProvider.credential(
-      // accessToken: ,
       idToken: googleAuth.authentication.idToken,
     );
 
-    // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
@@ -216,7 +214,13 @@ class _LoginPageState extends State<LoginPage> {
                   width: double.infinity,
                   height: 48,
                   child: OutlinedButton(
-                    onPressed: _handleGoogleSignIn,
+                    onPressed: () async {
+                      final user = await _handleGoogleSignIn();
+
+                      if (user != null && context.mounted) {
+                        context.push('/todos');
+                      }
+                    },
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(
                         color: Color(0xFFE5E7EB),

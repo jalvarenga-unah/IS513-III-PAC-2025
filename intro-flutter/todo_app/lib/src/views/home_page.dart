@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -26,10 +27,20 @@ class HomePage extends StatelessWidget {
                   CircleAvatar(
                     backgroundColor: Colors.red[50],
                     radius: 40,
-                    child: Text(
-                      'JA',
-                      style: TextStyle(fontSize: 42, color: Colors.red[400]),
-                    ),
+                    child: FirebaseAuth.instance.currentUser?.photoURL == null
+                        ? Text(
+                            'JA',
+                            style: TextStyle(
+                              fontSize: 42,
+                              color: Colors.red[400],
+                            ),
+                          )
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: Image.network(
+                              FirebaseAuth.instance.currentUser!.photoURL!,
+                            ),
+                          ),
                   ),
                   Text('Juan Alvarenga'),
                 ],
@@ -64,7 +75,21 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      appBar: AppBar(title: const Text('TODO-App')),
+      appBar: AppBar(
+        title: const Text('TODO-App'),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut(); // cierra la sesión
+
+              if (!context.mounted) return;
+
+              context.replace('/login');
+            },
+            icon: Icon(Icons.exit_to_app),
+          ),
+        ],
+      ),
       body: StreamBuilder(
         stream: todoProvider.getAllTodosStream(),
         builder: (context, snapshot) {
